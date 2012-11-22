@@ -12,9 +12,9 @@ public class SimpleBackpropPolicy extends BackpropagationPolicy {
     }
 
     @Override
-    public void update( Population pop, Skeleton s, int score ) {
+    public void update( Population pop, Skeleton s, int fitness ) {
         try {
-            pop.getSkeleton( s.getName() ).setScore( score );
+            pop.getSkeleton( s.getName() ).setFitness( fitness );
         }
         catch (NoSuchSkeletonException e) {
             System.out.println(e.getMessage());

@@ -3,7 +3,6 @@ package elements;
 import java.util.ArrayList;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -16,11 +15,12 @@ import grammar.Grammar;
 import grammar.GrammarException;
 import grammar.NonTerminal;
 
+import utils.PopIterator;
 import utils.SkeletonLogic;
 
-public class Population {
+public class Population implements Iterable<Skeleton>{
     
-    private List<Skeleton> cemetery;
+    private ArrayList<Skeleton> cemetery;
     
     public Population(Grammar grammar){
         this.cemetery = new ArrayList<Skeleton>();
@@ -71,7 +71,7 @@ public class Population {
     }
     
     public Skeleton getBest(){
-        final SortedSet<Skeleton> rankOrder = new TreeSet<Skeleton>( SkeletonLogic.SCORE_COMPARATOR );
+        final SortedSet<Skeleton> rankOrder = new TreeSet<Skeleton>( SkeletonLogic.FITNESS_COMPARATOR );
         rankOrder.addAll( this.cemetery );        
         return rankOrder.first();
     }
@@ -79,6 +79,11 @@ public class Population {
     @Override
     public String toString(){
         if (this.cemetery.size() == 0) return "Empty cemetery";
-        else return this.cemetery.size()+" skeletons. Best: "+this.getBest().getScore();
+        else return this.cemetery.size()+" skeletons. Best: "+this.getBest().getFitness();
+    }
+
+    @Override
+    public Iterator<Skeleton> iterator() {
+        return new PopIterator(this.cemetery);
     }
 }

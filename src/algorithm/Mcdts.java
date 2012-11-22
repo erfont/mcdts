@@ -1,9 +1,13 @@
 package algorithm;
 
-import policies.RandomSelectionPolicy;
+import policies.BackpropagationPolicy;
+import policies.ExpansionPolicy;
+import policies.SelectionPolicy;
 import policies.SimpleBackpropPolicy;
 import policies.SimpleExpansionPolicy;
 import policies.SimpleSimulation;
+import policies.Simulation;
+import policies.UCTSelectionPolicy;
 import elements.Population;
 import elements.Skeleton;
 import grammar.Grammar;
@@ -11,14 +15,14 @@ import grammar.GrammarException;
 
 public class Mcdts {
     
-    private final int target_score = 0;
+    private final int target_fitness = 0;
     private final int n_runs = 100;
 
     Population population;
-    private RandomSelectionPolicy selector;
-    private SimpleExpansionPolicy expander;
-    private SimpleSimulation simulator;
-    private SimpleBackpropPolicy updater;
+    private SelectionPolicy selector;
+    private ExpansionPolicy expander;
+    private Simulation simulator;
+    private BackpropagationPolicy updater;
     private Grammar grammar;
     
     public Mcdts(){
@@ -27,9 +31,10 @@ public class Mcdts {
     
     public boolean execute() {
         
-        while (this.population.getBest().getScore()>this.target_score){
+        while (this.population.getBest().getFitness() > this.target_fitness){
             Skeleton candidate = null;
-            while (candidate == null) candidate = this.selector.select( population );            
+            while (candidate == null) candidate = this.selector.select( population );    
+            candidate.setTimesVisited( candidate.getTimesVisited() + 1 );
             try {
                 this.expander.expand( candidate.getTree(), grammar );
             }
@@ -37,16 +42,18 @@ public class Mcdts {
                 System.out.println(e.getMessage());
                 return false;
             }
-            int score = this.simulator.playout( candidate.getTree(), n_runs );
-            this.updater.update( this.population, candidate, score );
+            int fitness = this.simulator.playout( candidate.getTree(), n_runs );
+            this.updater.update( this.population, candidate, fitness );
         }
+        
+        System.out.println(population.getBest().getTree());
         
         return true;        
         
     }
 
     private void init(){
-        this.selector = new RandomSelectionPolicy();
+        this.selector = new UCTSelectionPolicy(10);
         this.expander = new SimpleExpansionPolicy();
         this.simulator = new SimpleSimulation();
         this.updater = new SimpleBackpropPolicy();

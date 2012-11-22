@@ -1,6 +1,7 @@
 package policies;
 
 import grammar.DerivationTree;
+import grammar.Grammar;
 
 public abstract class Simulation {
     
@@ -15,7 +16,7 @@ public abstract class Simulation {
      * @param tree
      * @return The score obtained by the tree
      */
-    public abstract int playout(DerivationTree tree, int times);
+    public abstract int playout(Grammar grammar, DerivationTree tree, int times);
     
     public String getName() {
         return name;
