@@ -4,6 +4,7 @@ import java.util.Random;
 
 import elements.Population;
 import elements.Skeleton;
+import exceptions.EmptyCemeteryException;
 
 public class RandomSelectionPolicy extends SelectionPolicy {
 
@@ -13,11 +14,17 @@ public class RandomSelectionPolicy extends SelectionPolicy {
 
     @Override
     public Skeleton select( Population population ) {
+        Skeleton res = null;
         if (population.getSize()>0){
             Random r = new Random();
-            return population.getSkeletonInPos( r.nextInt( population.getSize() ));
+            try {
+                res = population.getSkeletonInPos( r.nextInt( population.getSize() ));             
+            }
+            catch (EmptyCemeteryException ece){
+                System.out.println(ece.getMessage());
+            }
         }
-        return null;
+        return res;
     }
 
 }

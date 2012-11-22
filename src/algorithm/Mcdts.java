@@ -6,6 +6,8 @@ import policies.SimpleExpansionPolicy;
 import policies.SimpleSimulation;
 import elements.Population;
 import elements.Skeleton;
+import grammar.Grammar;
+import grammar.GrammarException;
 
 public class Mcdts {
     
@@ -17,6 +19,7 @@ public class Mcdts {
     private SimpleExpansionPolicy expander;
     private SimpleSimulation simulator;
     private SimpleBackpropPolicy updater;
+    private Grammar grammar;
     
     public Mcdts(){
         this.init();
@@ -30,8 +33,14 @@ public class Mcdts {
     private void execute() {
         
         while (this.population.getBest().getScore()>this.target_score){
-            Skeleton candidate = this.selector.select( population );
-            this.expander.expand( candidate.getTree() );
+            Skeleton candidate = null;
+            while (candidate == null) candidate = this.selector.select( population );            
+            try {
+                this.expander.expand( candidate.getTree(), grammar );
+            }
+            catch (GrammarException e) {
+                System.out.println(e.getMessage());
+            }
             int score = this.simulator.playout( candidate.getTree(), n_runs );
             this.updater.update( this.population, candidate, score );
         }
@@ -40,7 +49,13 @@ public class Mcdts {
     }
 
     private void init(){
-        population = new Population();
+        try {
+            grammar = new Grammar( "Grammars/g4.gr" );
+        }
+        catch (final GrammarException e) {
+            e.printStackTrace();
+        }
+        population = new Population(grammar);
     }
     
     

@@ -1,17 +1,17 @@
 package exceptions;
 
-public class NoSuchSkeletonException extends Exception {
+public class EmptyCemeteryException extends Exception {
 
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
     
-    public NoSuchSkeletonException() {
+    public EmptyCemeteryException() {
         super();        
     }
     
-    public NoSuchSkeletonException(String msg) {
+    public EmptyCemeteryException(String msg) {
         super(msg);
     }
     
