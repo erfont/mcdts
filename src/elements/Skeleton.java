@@ -14,8 +14,13 @@ public class Skeleton {
         this.id = id;
         this.tree = null;
         this.timesVisited = 0;
-        this.score = 0;
-        this.name = "";
+        this.score = Integer.MAX_VALUE;
+        this.name = Integer.toString( id );
+    }
+    
+    @Override
+    public String toString(){
+        return this.name+" "+this.score;
     }
 
     public int getId() {

@@ -75,4 +75,10 @@ public class Population {
         rankOrder.addAll( this.cemetery );        
         return rankOrder.first();
     }
+    
+    @Override
+    public String toString(){
+        if (this.cemetery.size() == 0) return "Empty cemetery";
+        else return this.cemetery.size()+" skeletons. Best: "+this.getBest().getScore();
+    }
 }

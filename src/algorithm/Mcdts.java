@@ -23,14 +23,9 @@ public class Mcdts {
     
     public Mcdts(){
         this.init();
-        this.execute();
-        this.selector = new RandomSelectionPolicy();
-        this.expander = new SimpleExpansionPolicy();
-        this.simulator = new SimpleSimulation();
-        this.updater = new SimpleBackpropPolicy();
     }
     
-    private void execute() {
+    public boolean execute() {
         
         while (this.population.getBest().getScore()>this.target_score){
             Skeleton candidate = null;
@@ -40,15 +35,21 @@ public class Mcdts {
             }
             catch (GrammarException e) {
                 System.out.println(e.getMessage());
+                return false;
             }
             int score = this.simulator.playout( candidate.getTree(), n_runs );
             this.updater.update( this.population, candidate, score );
         }
         
+        return true;        
         
     }
 
     private void init(){
+        this.selector = new RandomSelectionPolicy();
+        this.expander = new SimpleExpansionPolicy();
+        this.simulator = new SimpleSimulation();
+        this.updater = new SimpleBackpropPolicy();
         try {
             grammar = new Grammar( "Grammars/g4.gr" );
         }
