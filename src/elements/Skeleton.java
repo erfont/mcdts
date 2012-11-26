@@ -2,7 +2,7 @@ package elements;
 
 import grammar.DerivationTree;
 
-public class Skeleton {
+public class Skeleton implements Cloneable {
 
     private int id;
     private DerivationTree tree;
@@ -16,6 +16,17 @@ public class Skeleton {
         this.timesVisited = 0;
         this.fitness = Integer.MAX_VALUE;
         this.name = Integer.toString( id );
+    }
+    
+    @Override 
+    public Skeleton clone(){
+        try {
+            return (Skeleton) super.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
     
     @Override

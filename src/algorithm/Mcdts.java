@@ -1,6 +1,7 @@
 package algorithm;
 
 import policies.BackpropagationPolicy;
+import policies.CardgameSimulation;
 import policies.ExpansionPolicy;
 import policies.SelectionPolicy;
 import policies.SimpleBackpropPolicy;
@@ -35,14 +36,15 @@ public class Mcdts {
             Skeleton candidate = null;
             while (candidate == null) candidate = this.selector.select( population );    
             candidate.setTimesVisited( candidate.getTimesVisited() + 1 );
+            int fitness = Integer.MAX_VALUE;
             try {
                 this.expander.expand( candidate.getTree(), grammar );
+                fitness = this.simulator.playout( grammar, 500, candidate.getTree(), n_runs );
             }
             catch (GrammarException e) {
                 System.out.println(e.getMessage());
                 return false;
             }
-            int fitness = this.simulator.playout( candidate.getTree(), n_runs );
             this.updater.update( this.population, candidate, fitness );
         }
         
@@ -55,7 +57,7 @@ public class Mcdts {
     private void init(){
         this.selector = new UCTSelectionPolicy(10);
         this.expander = new SimpleExpansionPolicy();
-        this.simulator = new SimpleSimulation();
+        this.simulator = new CardgameSimulation();
         this.updater = new SimpleBackpropPolicy();
         try {
             grammar = new Grammar( "Grammars/g4.gr" );

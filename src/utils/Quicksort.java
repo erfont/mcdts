@@ -1,16 +1,16 @@
 package utils;
 
 public class Quicksort {
-    private int[] numbers;
-    private int number;
+    private static int[] numbers;
+    private static int number;
 
-    private void exchange( int i, int j ) {
+    private static void exchange( int i, int j ) {
         final int temp = numbers[i];
         numbers[i] = numbers[j];
         numbers[j] = temp;
     }
 
-    private void quicksort( int low, int high ) {
+    private static void quicksort( int low, int high ) {
         int i = low, j = high;
         // Get the pivot element from the middle of the list
         final int pivot = numbers[low + (high - low) / 2];
@@ -48,7 +48,7 @@ public class Quicksort {
         }
     }
 
-    public void sort( int[] values ) {
+    public static void sort( int[] values ) {
         // Check for empty or null array
         if (values == null || values.length == 0) {
             return;

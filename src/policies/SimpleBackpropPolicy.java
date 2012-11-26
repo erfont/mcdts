@@ -7,21 +7,16 @@ import exceptions.NoSuchSkeletonException;
 
 public class SimpleBackpropPolicy extends BackpropagationPolicy {
 
-    public SimpleBackpropPolicy( ) {
+    public SimpleBackpropPolicy() {
         super( "Simple" );
     }
 
     @Override
     public void update( Population pop, Skeleton s, int fitness ) {
-        try {
-            pop.getSkeleton( s.getName() ).setFitness( fitness );
-        }
-        catch (NoSuchSkeletonException e) {
-            System.out.println(e.getMessage());
-        }
-        catch (EmptyCemeteryException e) {
-            System.out.println(e.getMessage());
-        }
+        Skeleton newbie = s.clone();
+        newbie.setFitness( fitness );
+        newbie.setName( s.getName() + ",*" );
+        pop.addSkeleton( newbie );
     }
 
 }

@@ -1,6 +1,7 @@
 package policies;
 
 import grammar.DerivationTree;
+import grammar.Grammar;
 
 public class SimpleSimulation extends Simulation {
 
@@ -9,7 +10,7 @@ public class SimpleSimulation extends Simulation {
     }
 
     @Override
-    public int playout( DerivationTree tree, int times ) {
+    public int playout( Grammar grammar,  int maxDepth, DerivationTree tree, int times ) {
         return 0;
     }
 
