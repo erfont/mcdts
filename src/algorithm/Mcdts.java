@@ -17,7 +17,7 @@ import grammar.GrammarException;
 public class Mcdts {
     
     private final int target_fitness = 0;
-    private final int n_runs = 100;
+    private final int n_runs = 10;
 
     Population population;
     private SelectionPolicy selector;
@@ -37,15 +37,17 @@ public class Mcdts {
             while (candidate == null) candidate = this.selector.select( population );    
             candidate.setTimesVisited( candidate.getTimesVisited() + 1 );
             int fitness = Integer.MAX_VALUE;
+            Skeleton clone = null;
             try {
-                this.expander.expand( candidate.getTree(), grammar );
-                fitness = this.simulator.playout( grammar, 500, candidate.getTree(), n_runs );
+                clone = candidate.clone();
+                this.expander.expand( clone.getTree(), grammar );
+                fitness = this.simulator.playout( grammar, 500, clone, n_runs );
             }
             catch (GrammarException e) {
                 System.out.println(e.getMessage());
                 return false;
             }
-            this.updater.update( this.population, candidate, fitness );
+            this.updater.update( this.population, clone, fitness );
         }
         
         System.out.println(population.getBest().getTree());

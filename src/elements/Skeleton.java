@@ -1,5 +1,6 @@
 package elements;
 
+import utils.TreeCloner;
 import grammar.DerivationTree;
 
 public class Skeleton implements Cloneable {
@@ -14,24 +15,20 @@ public class Skeleton implements Cloneable {
         this.id = id;
         this.tree = null;
         this.timesVisited = 0;
-        this.fitness = Integer.MAX_VALUE;
+        this.fitness = 1000;
         this.name = Integer.toString( id );
     }
-    
-    @Override 
-    public Skeleton clone(){
-        try {
-            return (Skeleton) super.clone();
-        }
-        catch (CloneNotSupportedException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
-    
+
     @Override
-    public String toString(){
-        return this.name+" "+this.fitness;
+    public Skeleton clone() {
+        Skeleton res = new Skeleton( this.id );
+        res.setTree( TreeCloner.cloneThisTree( res.getTree(), null, this.tree, this.tree.root() ) );
+        return res;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.fitness;
     }
 
     public int getId() {

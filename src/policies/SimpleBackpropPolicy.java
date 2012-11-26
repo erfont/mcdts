@@ -2,8 +2,6 @@ package policies;
 
 import elements.Population;
 import elements.Skeleton;
-import exceptions.EmptyCemeteryException;
-import exceptions.NoSuchSkeletonException;
 
 public class SimpleBackpropPolicy extends BackpropagationPolicy {
 
@@ -13,10 +11,9 @@ public class SimpleBackpropPolicy extends BackpropagationPolicy {
 
     @Override
     public void update( Population pop, Skeleton s, int fitness ) {
-        Skeleton newbie = s.clone();
-        newbie.setFitness( fitness );
-        newbie.setName( s.getName() + ",*" );
-        pop.addSkeleton( newbie );
+        s.setFitness( fitness );
+        s.setName( Integer.toString( pop.getSize() ) );
+        pop.addSkeleton( s );
     }
 
 }
