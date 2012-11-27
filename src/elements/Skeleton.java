@@ -15,8 +15,8 @@ public class Skeleton implements Cloneable {
     public Skeleton( int id ) {
         this.id = id;
         this.tree = null;
-        this.timesVisited = 0;
-        this.fitness = 1000;
+        this.timesVisited = 1;
+        this.fitness = 10000;
         this.name = Integer.toString( id );
         this.completed = false;
     }

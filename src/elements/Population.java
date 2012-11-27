@@ -79,11 +79,21 @@ public class Population implements Iterable<Skeleton>{
     @Override
     public String toString(){
         if (this.cemetery.size() == 0) return "Empty cemetery";
-        else return this.cemetery.size()+" skeletons. Best: "+this.getBest().getFitness();
+        else return this.cemetery.size()+" skeletons. Best: "+this.getBest().getFitness()+". % Completed: "+this.getPercentageFinished();
     }
 
     @Override
     public Iterator<Skeleton> iterator() {
         return new PopIterator(this.cemetery);
+    }
+    
+    public double getPercentageFinished(){
+        double res = 0;
+        
+        for (Skeleton s:this.cemetery)
+            if (s.isCompleted()) res++;
+        
+        res = res*100/this.cemetery.size();
+        return res;
     }
 }

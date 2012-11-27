@@ -23,7 +23,7 @@ public class UCTSelectionPolicy extends SelectionPolicy {
         for (Skeleton s:population){
             int fitness = s.getFitness();
             int timesV = s.getTimesVisited();            
-            UCTscore = (int) (fitness - C * Math.sqrt( Math.log( timesV )));
+            UCTscore = (int) (fitness + C * Math.sqrt( Math.log( timesV )));
             if (UCTscore < MINscore) {
                 pool.clear();
                 pool.add( s );

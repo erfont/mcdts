@@ -26,7 +26,7 @@ public class Mcdts {
 
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat( "k:m:s:S" );
 
-    private final int target_fitness = 5;
+    private final int target_fitness = 25;
     private final int n_runs = 1000;
 
     Population population;
@@ -63,9 +63,13 @@ public class Mcdts {
                 clone = candidate.clone();
                 if (this.expander.expand( clone.getTree(), grammar )) {
 //                  Logger.getLogger( this.getClass().getName() ).info( "Expanded tree:\n "+clone.getTree().toString() );
+                    
                     Logger.getLogger( "" ).setLevel( java.util.logging.Level.OFF );
+                    
                     fitness = this.simulator.playout( grammar, 500, clone, n_runs );
+                    
                     Logger.getLogger( "" ).setLevel( java.util.logging.Level.INFO );
+                    
                     this.updater.update( this.population, clone, fitness );
                 }
                 else {
@@ -76,10 +80,7 @@ public class Mcdts {
                 System.out.println( e.getMessage() );
                 return false;
             }
-            catch (IllegalStateException e) {
-                System.out.println( e.getMessage() );
-                fitness = 1000;
-            }
+
             iteration++;
         }
 
@@ -111,7 +112,7 @@ public class Mcdts {
         ch.setFormatter( formatter );
         Logger.getLogger( this.getClass().getName() ).addHandler( ch );
 
-        this.selector = new RandomSelectionPolicy();
+        this.selector = new UCTSelectionPolicy(100);
         this.expander = new SimpleExpansionPolicy();
         this.simulator = new CardgameSimulation();
         this.updater = new SimpleBackpropPolicy();

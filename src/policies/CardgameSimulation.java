@@ -30,22 +30,22 @@ public class CardgameSimulation extends Simulation{
         DerivationTree tree = null;
         DerivationTree treeToClone = clonedS.getTree();
         
-        tree = TreeCloner.cloneThisTree( tree, null, treeToClone, treeToClone.root());
-        
-        Derivation auxD = new Derivation( grammar, maxDepth, tree, Trees.depth( tree, tree.root() ) );
-        
-        Individual individual = new Individual("ind", auxD);
-        
-        Statistics stats = new Statistics( individual.getId() );
-        CardGame game = null;
+        Statistics stats = new Statistics( "AuxInd" );
+        Individual individual = null;
 
         for (int i = 0; i < times; i++) {
             try {
+                tree = TreeCloner.cloneThisTree( tree, null, treeToClone, treeToClone.root());
+                Derivation auxD = new Derivation( grammar, maxDepth, tree, Trees.depth( tree, tree.root() ) );                
+                individual = new Individual("ind", auxD);                
+                CardGame game = null;
                 game = new CardGame( individual.getDerivation() );
                 new SingleGameAnalysisApplication();
                 SingleGameAnalysisApplication.playGame( game, stats, false );
-            }
-            catch (final Exception e) {
+                tree = null;
+            }           
+            catch (Exception e) {
+//                System.out.println( e.getMessage() );
                 stats.addTimesCrashed();
             }
         }
@@ -54,7 +54,7 @@ public class CardgameSimulation extends Simulation{
         int fitness;
 
         if (stats.getTimesCrashed() == 0) {
-            fitness = stats.getTimesDraw() + Math.abs( (values[2] - values[0]) - 50) + Math.abs( stats.getAvgTurns() - 18 );
+            fitness = stats.getTimesDraw() + ( values[2] - values[0] ) + Math.abs( stats.getAvgTurns() );
         }
         else {
             fitness = stats.getTimesCrashed() * 2 + stats.getTimesDraw() + values[2] - values[0];
