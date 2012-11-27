@@ -23,7 +23,7 @@ public class CardgameSimulation extends Simulation{
     }
 
     @Override
-    public int playout( Grammar grammar,  int maxDepth,  Skeleton clonedS, int times ) throws GrammarException {       
+    public int playout( Grammar grammar,  int maxDepth,  Skeleton clonedS, int times ) throws GrammarException, IllegalStateException {       
         
         GameLogic.AUXILLARY_COMBINATIONS = new PokerCombinations();
         
@@ -43,7 +43,7 @@ public class CardgameSimulation extends Simulation{
             try {
                 game = new CardGame( individual.getDerivation() );
                 new SingleGameAnalysisApplication();
-                SingleGameAnalysisApplication.playGame( game, stats );
+                SingleGameAnalysisApplication.playGame( game, stats, false );
             }
             catch (final Exception e) {
                 stats.addTimesCrashed();
