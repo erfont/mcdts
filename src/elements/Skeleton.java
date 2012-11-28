@@ -11,6 +11,7 @@ public class Skeleton implements Cloneable {
     private int fitness;
     private String name;
     private boolean completed;
+    private String key;
 
     public Skeleton( int id ) {
         this.id = id;
@@ -19,6 +20,7 @@ public class Skeleton implements Cloneable {
         this.fitness = 10000;
         this.name = Integer.toString( id );
         this.completed = false;
+        this.key = "";
     }
 
     @Override
@@ -31,6 +33,10 @@ public class Skeleton implements Cloneable {
     @Override
     public String toString() {
         return "Name: "+this.name + "\tFitness: " + this.fitness + "\tTimes visited: "+this.timesVisited+"\nTree: \n"+this.tree.toString();
+    }
+    
+    public void generateKey(){
+        this.key = this.tree.toElementKey();
     }
 
     public int getId() {
@@ -79,5 +85,9 @@ public class Skeleton implements Cloneable {
 
     public boolean isCompleted() {
         return completed;
+    }
+
+    public String getKey() {
+        return key;
     }
 }

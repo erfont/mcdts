@@ -16,8 +16,9 @@ public abstract class BackpropagationPolicy {
      * @param pop
      * @param s
      * @param score
+     * @return 
      */
-    public abstract void update(Population pop, Skeleton s, int score);
+    public abstract boolean update(Population pop, Skeleton s, int score);
     
     public String getName() {
         return name;

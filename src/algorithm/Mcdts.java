@@ -51,7 +51,6 @@ public class Mcdts {
             Skeleton candidate = null;
             while (candidate == null) {
                 candidate = this.selector.select( population );
-                if (candidate.isCompleted()) candidate = null;
             }
             candidate.setTimesVisited( candidate.getTimesVisited() + 1 );
 
@@ -64,13 +63,16 @@ public class Mcdts {
                 if (this.expander.expand( clone.getTree(), grammar )) {
 //                  Logger.getLogger( this.getClass().getName() ).info( "Expanded tree:\n "+clone.getTree().toString() );
                     
+                    clone.generateKey();
+                    
                     Logger.getLogger( "" ).setLevel( java.util.logging.Level.OFF );
                     
                     fitness = this.simulator.playout( grammar, 500, clone, n_runs );
                     
                     Logger.getLogger( "" ).setLevel( java.util.logging.Level.INFO );
                     
-                    this.updater.update( this.population, clone, fitness );
+                    if (!this.updater.update( this.population, clone, fitness ))
+                        Logger.getLogger( this.getClass().getName() ).info( "Skeleton already indexed" );
                 }
                 else {
                     candidate.setCompleted( true );
@@ -112,7 +114,7 @@ public class Mcdts {
         ch.setFormatter( formatter );
         Logger.getLogger( this.getClass().getName() ).addHandler( ch );
 
-        this.selector = new UCTSelectionPolicy(100);
+        this.selector = new UCTSelectionPolicy(20);
         this.expander = new SimpleExpansionPolicy();
         this.simulator = new CardgameSimulation();
         this.updater = new SimpleBackpropPolicy();

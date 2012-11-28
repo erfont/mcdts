@@ -18,9 +18,10 @@ public class UCTSelectionPolicy extends SelectionPolicy {
     @Override
     public Skeleton select( Population population ) {        
         int UCTscore = Integer.MAX_VALUE, MINscore = Integer.MAX_VALUE;
+        ArrayList<Skeleton> uPopulation = population.getNonCompleted();
         ArrayList<Skeleton> pool = new ArrayList<Skeleton>();
                 
-        for (Skeleton s:population){
+        for (Skeleton s:uPopulation){
             int fitness = s.getFitness();
             int timesV = s.getTimesVisited();            
             UCTscore = (int) (fitness + C * Math.sqrt( Math.log( timesV )));

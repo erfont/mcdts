@@ -10,10 +10,10 @@ public class SimpleBackpropPolicy extends BackpropagationPolicy {
     }
 
     @Override
-    public void update( Population pop, Skeleton s, int fitness ) {
+    public boolean update( Population pop, Skeleton s, int fitness ) {
         s.setFitness( fitness );
         s.setName( Integer.toString( pop.getSize() ) );
-        pop.addSkeleton( s );
+        return pop.insertNewSkeleton( s );
     }
 
 }

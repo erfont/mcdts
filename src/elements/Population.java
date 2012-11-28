@@ -44,11 +44,24 @@ public class Population implements Iterable<Skeleton>{
             e.printStackTrace();
         }
         first.setTree( fTree );
+        first.generateKey();
         this.cemetery.add( first );
     }
 
     public void addSkeleton(Skeleton s){
         this.cemetery.add( s );
+    }
+    
+    public ArrayList<Skeleton> getNonCompleted(){
+        ArrayList<Skeleton> res = new ArrayList<Skeleton>();
+        
+        Iterator<Skeleton> it = this.cemetery.iterator();
+        while (it.hasNext()){
+            Skeleton aux = it.next();
+            if (!aux.isCompleted()) res.add( aux );
+        }
+        
+        return res;
     }
     
     public Skeleton getSkeleton(String name) throws NoSuchSkeletonException, EmptyCemeteryException {
@@ -95,5 +108,15 @@ public class Population implements Iterable<Skeleton>{
         
         res = res*100/this.cemetery.size();
         return res;
+    }
+    
+    public boolean insertNewSkeleton(Skeleton newbie){        
+        for (Skeleton s:this.cemetery) {
+            if (s.getKey().equals( newbie.getKey() )) {
+                return false;
+            }
+        }
+        this.cemetery.add( newbie ); 
+        return true;
     }
 }
