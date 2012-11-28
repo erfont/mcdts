@@ -8,6 +8,8 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import dk.itu.ccgr.evocardgame.game.CardGame;
+
 import policies.BackpropagationPolicy;
 import policies.CardgameSimulation;
 import policies.ExpansionPolicy;
@@ -19,15 +21,17 @@ import policies.Simulation;
 import policies.UCTSelectionPolicy;
 import elements.Population;
 import elements.Skeleton;
+import grammar.Derivation;
 import grammar.Grammar;
 import grammar.GrammarException;
+import grammar.util.Trees;
 
 public class Mcdts {
 
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat( "k:m:s:S" );
 
-    private final int target_fitness = 25;
-    private final int n_runs = 1000;
+    private final int target_fitness = 30;
+    private final int n_runs = 100;
 
     Population population;
     private SelectionPolicy selector;
@@ -87,6 +91,15 @@ public class Mcdts {
         }
 
         System.out.println( population.getBest().getTree() );
+        Derivation auxD = null;
+        try {
+            auxD = new Derivation( grammar, 500, population.getBest().getTree(), Trees.depth( population.getBest().getTree(), population.getBest().getTree().root() ) );
+        }
+        catch (GrammarException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println( new CardGame(auxD).toString() );
 
         return true;
 

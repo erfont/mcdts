@@ -42,22 +42,22 @@ public class CardgameSimulation extends Simulation{
                 game = new CardGame( individual.getDerivation() );
                 new SingleGameAnalysisApplication();
                 SingleGameAnalysisApplication.playGame( game, stats, false );
-                tree = null;
             }           
             catch (Exception e) {
 //                System.out.println( e.getMessage() );
                 stats.addTimesCrashed();
             }
+            tree = null;
         }
         final int[] values = stats.getTimesWon();
         Quicksort.sort( values );
         int fitness;
 
         if (stats.getTimesCrashed() == 0) {
-            fitness = stats.getTimesDraw() + ( values[2] - values[0] ) + Math.abs( stats.getAvgTurns() );
+            fitness = stats.getTimesDraw() + ( Math.abs( (values[2] - values[0]) - 25 )) + Math.abs( stats.getAvgTurns() - 20 );
         }
         else {
-            fitness = stats.getTimesCrashed() * 2 + stats.getTimesDraw() + values[2] - values[0];
+            fitness = stats.getTimesCrashed() * 2 + stats.getTimesDraw() + ( Math.abs( (values[2] - values[0]) - 25 ));
         }
 
         return fitness;
