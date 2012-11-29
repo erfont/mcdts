@@ -16,9 +16,10 @@ public abstract class Simulation {
     /**
      * Creates a full derivation from the unfinished tree and tests it a given number of times.
      * @param skeleton
+     * @param solution 
      * @return The score obtained by the tree
      */
-    public abstract int playout(Grammar grammar,  int maxDepth, Skeleton skeleton, int times) throws GrammarException;
+    public abstract int playout(Grammar grammar,  int maxDepth, Skeleton skeleton, int times, int targetFitness, Object solution) throws GrammarException;
     
     public String getName() {
         return name;

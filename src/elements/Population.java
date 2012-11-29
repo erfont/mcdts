@@ -92,7 +92,7 @@ public class Population implements Iterable<Skeleton>{
     @Override
     public String toString(){
         if (this.cemetery.size() == 0) return "Empty cemetery";
-        else return this.cemetery.size()+" skeletons. Best: "+this.getBest().getName()+" . Fitness: "+this.getBest().getFitness()+". % Completed: "+this.getPercentageFinished();
+        else return this.cemetery.size()+" skeletons. Best: "+this.getBest().getName()+" . Fitness: "+this.getBest().getFitness()+". Completed: "+this.getPercentageFinished()+"%.";
     }
 
     @Override

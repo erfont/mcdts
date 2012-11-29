@@ -21,6 +21,7 @@ import policies.Simulation;
 import policies.UCTSelectionPolicy;
 import elements.Population;
 import elements.Skeleton;
+import elements.Solution;
 import grammar.Derivation;
 import grammar.Grammar;
 import grammar.GrammarException;
@@ -30,7 +31,7 @@ public class Mcdts {
 
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat( "k:m:s:S" );
 
-    private final int target_fitness = 30;
+    private final int target_fitness = 0;
     private final int n_runs = 100;
 
     Population population;
@@ -39,6 +40,7 @@ public class Mcdts {
     private Simulation simulator;
     private BackpropagationPolicy updater;
     private Grammar grammar;
+    private Solution solution;    
 
     public Mcdts() {
         this.init();
@@ -48,7 +50,8 @@ public class Mcdts {
 
         Logger.getLogger( this.getClass().getName() ).info( "Starting MCDTS" );
         int iteration = 0;
-        while (this.population.getBest().getFitness() > this.target_fitness) {
+        solution = new Solution();
+        while (solution.getGame()==null) {
             Logger.getLogger( this.getClass().getName() ).info( "----------- ITERATION: " + iteration + " -------------" );
             Logger.getLogger( this.getClass().getName() ).info( "Population:\n" + this.population.toString() );
 
@@ -71,7 +74,7 @@ public class Mcdts {
                     
                     Logger.getLogger( "" ).setLevel( java.util.logging.Level.OFF );
                     
-                    fitness = this.simulator.playout( grammar, 500, clone, n_runs );
+                    fitness = this.simulator.playout( grammar, 500, clone, n_runs, this.target_fitness, solution );
                     
                     Logger.getLogger( "" ).setLevel( java.util.logging.Level.INFO );
                     
@@ -89,17 +92,21 @@ public class Mcdts {
 
             iteration++;
         }
+        
+        Logger.getLogger( "" ).setLevel( java.util.logging.Level.OFF );
 
-        System.out.println( population.getBest().getTree() );
-        Derivation auxD = null;
-        try {
-            auxD = new Derivation( grammar, 500, population.getBest().getTree(), Trees.depth( population.getBest().getTree(), population.getBest().getTree().root() ) );
-        }
-        catch (GrammarException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        System.out.println( new CardGame(auxD).toString() );
+        
+        System.out.println( population.getBest().toString());
+        System.out.println( solution.getGame().toString());
+//        Derivation auxD = null;
+//        try {
+//            auxD = new Derivation( grammar, 500, population.getBest().getTree(), Trees.depth( population.getBest().getTree(), population.getBest().getTree().root() ) );
+//        }
+//        catch (GrammarException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        System.out.println( new CardGame(auxD).toString() );
 
         return true;
 
@@ -131,6 +138,7 @@ public class Mcdts {
         this.expander = new SimpleExpansionPolicy();
         this.simulator = new CardgameSimulation();
         this.updater = new SimpleBackpropPolicy();
+        this.solution = null;
         try {
             grammar = new Grammar( "Grammars/g4.gr" );
         }

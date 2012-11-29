@@ -11,7 +11,7 @@ public class SimpleSimulation extends Simulation {
     }
 
     @Override
-    public int playout( Grammar grammar,  int maxDepth, Skeleton s, int times ) {
+    public int playout( Grammar grammar,  int maxDepth, Skeleton s, int times, int targetFitness, Object solution ) {
         return 0;
     }
 
