@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="lib/jdsl-2.1.1/lib/jdsl.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/CardGameMaker"/>
+	<classpathentry kind="lib" path="/CardGameMaker/lib/commons-lang3-3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

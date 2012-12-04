@@ -18,6 +18,7 @@ import policies.selection.RandomSelectionPolicy;
 import policies.selection.SelectionPolicy;
 import policies.selection.UCTSelectionPolicy;
 import policies.simulation.CardgameSimulation;
+import policies.simulation.FixedCardGameSimulation;
 import policies.simulation.Simulation;
 import elements.Population;
 import elements.Skeleton;
@@ -32,7 +33,7 @@ public class Mcdts {
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat( "k:m:s:S" );
 
     private final int target_fitness = 0;
-    private final int n_runs = 25;
+    private final int n_runs = 10000;
 
     Population population;
     private SelectionPolicy selector;
@@ -134,9 +135,9 @@ public class Mcdts {
         ch.setFormatter( formatter );
         Logger.getLogger( this.getClass().getName() ).addHandler( ch );
 
-        this.selector = new UCTSelectionPolicy(20);
+        this.selector = new UCTSelectionPolicy(10);
         this.expander = new SimpleExpansionPolicy();
-        this.simulator = new CardgameSimulation();
+        this.simulator = new FixedCardGameSimulation();
         this.updater = new SimpleBackpropPolicy();
         this.solution = null;
         try {
