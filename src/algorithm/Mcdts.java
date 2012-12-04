@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import dk.itu.ccgr.evocardgame.game.CardGame;
 
 import policies.BackpropagationPolicy;
-import policies.CardgameSimulation;
 import policies.ExpansionPolicy;
 import policies.RandomSelectionPolicy;
 import policies.SelectionPolicy;
@@ -19,6 +18,7 @@ import policies.SimpleBackpropPolicy;
 import policies.SimpleExpansionPolicy;
 import policies.Simulation;
 import policies.UCTSelectionPolicy;
+import policies.simulation.CardgameSimulation;
 import elements.Population;
 import elements.Skeleton;
 import elements.Solution;
@@ -32,7 +32,7 @@ public class Mcdts {
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat( "k:m:s:S" );
 
     private final int target_fitness = 0;
-    private final int n_runs = 100;
+    private final int n_runs = 25;
 
     Population population;
     private SelectionPolicy selector;

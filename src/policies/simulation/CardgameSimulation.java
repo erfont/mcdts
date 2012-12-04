@@ -1,5 +1,6 @@
-package policies;
+package policies.simulation;
 
+import policies.Simulation;
 import utils.Quicksort;
 import utils.TreeCloner;
 import dk.itu.ccgr.evocardgame.application.SingleGameAnalysisApplication;
