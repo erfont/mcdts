@@ -14,7 +14,7 @@ import grammar.Grammar;
 import grammar.GrammarException;
 import grammar.util.Trees;
 
-import policies.SimpleExpansionPolicy;
+import policies.expansion.SimpleExpansionPolicy;
 
 public class ExpandAndComplete {
     

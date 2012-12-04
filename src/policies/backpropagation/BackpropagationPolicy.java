@@ -1,4 +1,4 @@
-package policies;
+package policies.backpropagation;
 
 import elements.Population;
 import elements.Skeleton;

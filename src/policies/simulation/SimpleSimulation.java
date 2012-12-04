@@ -1,6 +1,5 @@
 package policies.simulation;
 
-import policies.Simulation;
 import elements.Skeleton;
 import grammar.DerivationTree;
 import grammar.Grammar;

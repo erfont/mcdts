@@ -10,15 +10,15 @@ import java.util.logging.Logger;
 
 import dk.itu.ccgr.evocardgame.game.CardGame;
 
-import policies.BackpropagationPolicy;
-import policies.ExpansionPolicy;
-import policies.RandomSelectionPolicy;
-import policies.SelectionPolicy;
-import policies.SimpleBackpropPolicy;
-import policies.SimpleExpansionPolicy;
-import policies.Simulation;
-import policies.UCTSelectionPolicy;
+import policies.backpropagation.BackpropagationPolicy;
+import policies.backpropagation.SimpleBackpropPolicy;
+import policies.expansion.ExpansionPolicy;
+import policies.expansion.SimpleExpansionPolicy;
+import policies.selection.RandomSelectionPolicy;
+import policies.selection.SelectionPolicy;
+import policies.selection.UCTSelectionPolicy;
 import policies.simulation.CardgameSimulation;
+import policies.simulation.Simulation;
 import elements.Population;
 import elements.Skeleton;
 import elements.Solution;

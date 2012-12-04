@@ -1,4 +1,4 @@
-package policies;
+package policies.selection;
 
 import java.util.ArrayList;
 import java.util.Random;

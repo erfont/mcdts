@@ -1,4 +1,4 @@
-package policies;
+package policies.expansion;
 
 import grammar.DerivationTree;
 import grammar.Grammar;

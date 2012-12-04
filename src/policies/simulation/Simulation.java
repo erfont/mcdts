@@ -1,4 +1,4 @@
-package policies;
+package policies.simulation;
 
 import elements.Skeleton;
 import grammar.DerivationTree;
