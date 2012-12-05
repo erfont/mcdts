@@ -1,8 +1,9 @@
 package policies.expansion;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
+
+import elements.ProductionRanking;
 
 import jdsl.core.api.Position;
 import grammar.DerivationTree;
@@ -12,36 +13,31 @@ import grammar.GrammarException;
 import grammar.NonTerminal;
 import grammar.Production;
 
-public class SimpleExpansionPolicy extends ExpansionPolicy {
+public class UCTExpansionPolicy extends ExpansionPolicy {
 
-    public SimpleExpansionPolicy(  ) {
-        super( "Simple" );
+    private ProductionRanking productionsRanking;
+
+    public UCTExpansionPolicy( Grammar g ) {
+        super( "UCT based Expansion" );
+        this.productionsRanking = new ProductionRanking(g);        
     }
 
     @Override
-    public Production expand( DerivationTree tree, Grammar grammar ) throws GrammarException {
-        
+    public Production expand( DerivationTree tree, Grammar grammar) throws GrammarException {
         //Get non terminal leaves
         ArrayList<Position> leaves = tree.getNonTerminalLeaves();
         
         if (leaves.size()>0){
-            Iterator<Position> it = leaves.iterator();
-//            while (it.hasNext()) System.out.println("Tree leaves: "+((Element)it.next().get( "Element" )).getSymbol());
             
             //Choose one as the node to expand
             Random r = new Random();
-            Position pos = leaves.get( r.nextInt(leaves.size()) );       
+            Position pos = leaves.get( r.nextInt(leaves.size()) );
             
-//            System.out.println("Chosen NonTerminal: "+((Element)pos.get( "Element" )).getSymbol());
-            //Get its associated productions
-            ArrayList<Production> ps = grammar.getProductions().getProductionsWithLeft( (NonTerminal) pos.get( "Element" ) );
+            //Choose the best valued production for the node to expand
+            Production p = this.productionsRanking.chooseBestFor( (NonTerminal) pos.get( "Element" ) );
             
-            Iterator<Production> it2 = ps.iterator();
-//            while (it2.hasNext()) System.out.println("Productions available: "+it2.next().getSymbol());
-            
-            //Choose one
-            Production p = ps.get( r.nextInt(ps.size()) );
-//            System.out.println("Chosen production: "+p.getSymbol());
+            //Lower production score because it's been visited
+            this.productionsRanking.updateProduction( p.getSymbol(), -5 );
             
             //Apply it
             pos.set( "Production", p );
@@ -61,7 +57,6 @@ public class SimpleExpansionPolicy extends ExpansionPolicy {
         else {
             return null;     
         }
-
     }
 
 }

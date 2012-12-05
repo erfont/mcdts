@@ -2,6 +2,7 @@ package policies.backpropagation;
 
 import elements.Population;
 import elements.Skeleton;
+import grammar.Production;
 
 public abstract class BackpropagationPolicy {
     
@@ -22,6 +23,11 @@ public abstract class BackpropagationPolicy {
     
     public String getName() {
         return name;
+    }
+
+    public boolean update( Population pop, Skeleton s, int fitness, Production p ) {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

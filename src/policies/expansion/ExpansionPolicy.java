@@ -3,6 +3,7 @@ package policies.expansion;
 import grammar.DerivationTree;
 import grammar.Grammar;
 import grammar.GrammarException;
+import grammar.Production;
 
 public abstract class ExpansionPolicy {
     
@@ -18,10 +19,9 @@ public abstract class ExpansionPolicy {
      * @return 
      * @throws GrammarException 
      */
-    public abstract boolean expand(DerivationTree tree, Grammar grammar) throws GrammarException;
+    public abstract Production expand(DerivationTree tree, Grammar grammar) throws GrammarException;
     
     public String getName() {
         return name;
     }
-
 }

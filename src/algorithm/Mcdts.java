@@ -14,6 +14,7 @@ import policies.backpropagation.BackpropagationPolicy;
 import policies.backpropagation.SimpleBackpropPolicy;
 import policies.expansion.ExpansionPolicy;
 import policies.expansion.SimpleExpansionPolicy;
+import policies.expansion.UCTExpansionPolicy;
 import policies.selection.RandomSelectionPolicy;
 import policies.selection.SelectionPolicy;
 import policies.selection.UCTSelectionPolicy;
@@ -26,6 +27,7 @@ import elements.Solution;
 import grammar.Derivation;
 import grammar.Grammar;
 import grammar.GrammarException;
+import grammar.Production;
 import grammar.util.Trees;
 
 public class Mcdts {
@@ -33,7 +35,7 @@ public class Mcdts {
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat( "k:m:s:S" );
 
     private final int target_fitness = 0;
-    private final int n_runs = 10000;
+    private final int n_runs = 1000;
 
     Population population;
     private SelectionPolicy selector;
@@ -68,18 +70,17 @@ public class Mcdts {
             Skeleton clone = null;
             try {
                 clone = candidate.clone();
-                if (this.expander.expand( clone.getTree(), grammar )) {
-//                  Logger.getLogger( this.getClass().getName() ).info( "Expanded tree:\n "+clone.getTree().toString() );
-                    
+                Production chosenProd = this.expander.expand( clone.getTree(), grammar );
+                if (chosenProd != null) {
                     clone.generateKey();
-                    
+                    Logger.getLogger( this.getClass().getName() ).info( "Chose production: " + chosenProd.getSymbol() );
                     Logger.getLogger( "" ).setLevel( java.util.logging.Level.OFF );
                     
                     fitness = this.simulator.playout( grammar, 500, clone, n_runs, this.target_fitness, solution );
                     
                     Logger.getLogger( "" ).setLevel( java.util.logging.Level.INFO );
                     
-                    if (!this.updater.update( this.population, clone, fitness ))
+                    if (!this.updater.update( this.population, clone, fitness, chosenProd ))
                         Logger.getLogger( this.getClass().getName() ).info( "Skeleton already indexed" );
                 }
                 else {
@@ -135,11 +136,6 @@ public class Mcdts {
         ch.setFormatter( formatter );
         Logger.getLogger( this.getClass().getName() ).addHandler( ch );
 
-        this.selector = new UCTSelectionPolicy(10);
-        this.expander = new SimpleExpansionPolicy();
-        this.simulator = new FixedCardGameSimulation();
-        this.updater = new SimpleBackpropPolicy();
-        this.solution = null;
         try {
             grammar = new Grammar( "Grammars/g4.gr" );
         }
@@ -147,6 +143,13 @@ public class Mcdts {
             e.printStackTrace();
         }
         population = new Population( grammar );
+        
+        this.selector = new UCTSelectionPolicy(30);
+        this.expander = new UCTExpansionPolicy(grammar);
+        this.simulator = new FixedCardGameSimulation();
+        this.updater = new SimpleBackpropPolicy();
+        this.solution = null;
+        
     }
 
 }
